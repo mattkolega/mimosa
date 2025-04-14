@@ -1,7 +1,10 @@
 import { BrowserRouter, Routes, Route } from "react-router";
 
-import BaseLayout from "@/components/base-layout";
 import Home from "@/app/routes/home";
+import Library from "@/app/routes/library";
+import Settings from "@/app/routes/settings";
+
+import BaseLayout from "@/components/base-layout";
 
 const AppRouter = () => {
   return (
@@ -9,6 +12,8 @@ const AppRouter = () => {
       <Routes>
         <Route path="/" element={<BaseLayout />}>
           <Route index element={<Home />} />
+          <Route path="/library" element={<Library />} />
+          <Route path="/settings" element={<Settings />} />
         </Route>
       </Routes>
     </BrowserRouter>
