@@ -1,4 +1,4 @@
-import getDb from "@/db";
+import { invoke } from '@tauri-apps/api/core';
 
 export type Location = {
   id: number;
@@ -6,23 +6,28 @@ export type Location = {
 }
 
 export async function getAllLocations(): Promise<Location[]> {
-  return await getDb().select<Location[]>("SELECT * FROM location");
+  return invoke<Location[]>('get_all_locations')
+    .then((result) => result)
+    .catch((error) => {
+      console.error(error)
+      return [];
+    });
 }
 
 export async function addLocation(path: string): Promise<number> {
-  const result = await getDb().execute(
-    "INSERT INTO location (path) VALUES ($1)",
-    [path],
-  );
-
-  return result.lastInsertId ?? 0;
+  return invoke<number>('add_location', {path: path})
+    .then((result) => result)
+    .catch((error) => {
+      console.error(error)
+      return 0;
+    });
 }
 
 export async function deleteLocation(path: string): Promise<number> {
-  const result = await getDb().execute(
-    "DELETE FROM location WHERE path = $1",
-    [path],
-  );
-
-  return result.rowsAffected;
+  return invoke<number>('delete_location', {path: path})
+    .then((result) => result)
+    .catch((error) => {
+      console.error(error)
+      return 0;
+    });
 }
