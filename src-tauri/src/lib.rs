@@ -13,7 +13,7 @@ pub fn run() {
                 let app_data_dir = app.path().app_data_dir().unwrap();
 
                 let db_state = db::database::DbState {
-                    pool: db::database::initialise_db(app_data_dir).await.unwrap()
+                    pool: db::database::initialise_db(&app_data_dir).await.unwrap()
                 };
 
                 app.manage(db_state)
