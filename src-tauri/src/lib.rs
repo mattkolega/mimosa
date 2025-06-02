@@ -1,6 +1,7 @@
 use tauri::Manager;
 
 mod db;
+mod file;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -25,10 +26,9 @@ pub fn run() {
             db::location::add_location,
             db::location::delete_location,
             db::track::get_all_tracks,
-            db::track::add_track,
-            db::track::add_multiple_tracks,
             db::track::delete_track,
-            db::track::delete_multiple_tracks
+            db::track::delete_multiple_tracks,
+            file::import_audio,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -6,11 +6,11 @@ use tauri::State;
 
 #[derive(FromRow, Serialize, Deserialize)]
 pub struct Track {
-    id: i32,
-    title: String,
-    artist: Option<String>,
-    album: Option<String>,
-    filepath: String,
+    pub id: Option<i32>,
+    pub title: Option<String>,
+    pub artist: Option<String>,
+    pub album: Option<String>,
+    pub filepath: String,
 }
 
 #[tauri::command]
@@ -25,7 +25,6 @@ pub async fn get_all_tracks(state: State<'_, DbState>) -> Result<Vec<Track>, Str
     Ok(result)
 }
 
-#[tauri::command]
 pub async fn add_track(state: State<'_, DbState>, track: Track) -> Result<i64, String> {
     let result = sqlx::query(
         "INSERT INTO track VALUES ($1, $2, $3, $4)"
@@ -41,7 +40,6 @@ pub async fn add_track(state: State<'_, DbState>, track: Track) -> Result<i64, S
     Ok(result.last_insert_rowid())
 }
 
-#[tauri::command]
 pub async fn add_multiple_tracks(state: State<'_, DbState>, tracks: Vec<Track>) -> Result<u64, String> {
     let mut tx = state.pool.begin()
         .await
